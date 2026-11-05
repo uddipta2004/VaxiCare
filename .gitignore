@@ -1,0 +1,43 @@
+# Local credentials and environment configuration
+.env
+.env.*
+!.env.example
+config.local.php
+config.*.local.php
+config.php.local
+config.local.*
+local-config.php
+local_config.php
+
+# Runtime data and private uploads
+/tmp/
+/uploads/photos/*
+!/uploads/photos/.gitkeep
+/uploads/certificates/*
+!/uploads/certificates/.gitkeep
+/uploads/qr_codes/*
+!/uploads/qr_codes/.gitkeep
+*.log
+*.log.*
+*.bak
+*.backup
+*.bkp
+*.old
+*.orig
+*.sql.gz
+*.dump
+*.zip
+*.tar
+*.tar.gz
+*.7z
+*.rar
+
+# Project reports may contain student names and registration numbers
+/SynopsysReport.pdf
+/VaxiCare_Report_Bordered.pdf
+
+# Local editor and operating system files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

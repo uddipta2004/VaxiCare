@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaxiCare – Project Completion Certificate</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: linear-gradient(135deg, #0c0e1a 0%, #0f172a 50%, #0c1e35 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    padding: 30px 16px;
+  }
+
+  /* ── ACTION BAR ── */
+  .action-bar {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn-dl {
+    padding: 11px 28px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: .9rem;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all .3s;
+    text-decoration: none;
+  }
+  .btn-print {
+    background: rgba(255,255,255,.08);
+    color: #e2e8f0;
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  .btn-print:hover { background: rgba(255,255,255,.16); color:#fff; }
+  .btn-pdf {
+    background: linear-gradient(135deg,#0ea5e9,#6366f1);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(14,165,233,.4);
+  }
+  .btn-pdf:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(14,165,233,.55); }
+
+  /* ── CERTIFICATE CARD ── */
+  .cert-wrap {
+    width: 100%;
+    max-width: 860px;
+    background: #fff;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 40px 100px rgba(0,0,0,.7), 0 0 0 1px rgba(14,165,233,.15);
+    position: relative;
+  }
+
+  /* Border frame */
+  .cert-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 2.5px solid transparent;
+    border-image: linear-gradient(135deg,#0ea5e9,#6366f1,#22c55e,#0ea5e9) 1;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ── TOP STRIP ── */
+  .cert-top-strip {
+    background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+    padding: 0;
+    height: 10px;
+  }
+
+  /* ── HEADER ── */
+  .cert-header {
+    padding: 40px 60px 24px;
+    text-align: center;
+    background: #fff;
+    border-bottom: 1px solid #e2e8f0;
+    position: relative;
+  }
+  .cert-logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .cert-logo-icon {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg,#0ea5e9,#6366f1);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 1.4rem;
+  }
+  .cert-brand-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg,#0ea5e9,#6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .cert-issuer {
+    font-size: .78rem;
+    color: #64748b;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* ── BODY ── */
+  .cert-body {
+    padding: 36px 60px;
+    text-align: center;
+    background: #fff;
+  }
+  .cert-title {
+    font-family: 'Playfair Display', serif;
+    font-size: .72rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 400;
+    margin-bottom: 6px;
+  }
+  .cert-heading {
+    font-family: 'Cinzel', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 24px;
+    letter-spacing: .5px;
+  }
+  .cert-presented {
+    font-size: .82rem;
+    color: #64748b;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .cert-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.6rem;
+    font-style: italic;
+    font-weight: 700;
+    background: linear-gradient(135deg,#0ea5e9,#6366f1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 2.5px solid;
+    border-image: linear-gradient(90deg,transparent,#0ea5e9,#6366f1,transparent) 1;
+    display: inline-block;
+  }
+  .cert-subtitle {
+    font-size: .82rem;
+    color: #64748b;
+    margin: 18px 0 22px;
+    font-weight: 400;
+    line-height: 1.8;
+    max-width: 580px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cert-project-box {
+    display: inline-block;
+    background: linear-gradient(135deg,rgba(14,165,233,.08),rgba(99,102,241,.08));
+    border: 1.5px solid rgba(14,165,233,.3);
+    border-radius: 12px;
+    padding: 14px 32px;
+    margin-bottom: 24px;
+  }
+  .cert-project-label {
+    font-size: .68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #94a3b8;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .cert-project-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: .5px;
+  }
+
+  /* Skills badges */
+  .cert-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .skill-badge {
+    padding: 5px 14px;
+    border-radius: 50px;
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .5px;
+  }
+  .badge-blue   { background: rgba(14,165,233,.1);  color:#0284c7;  border:1px solid rgba(14,165,233,.3);  }
+  .badge-indigo { background: rgba(99,102,241,.1);  color:#4f46e5;  border:1px solid rgba(99,102,241,.3);  }
+  .badge-green  { background: rgba(34,197,94,.1);   color:#16a34a;  border:1px solid rgba(34,197,94,.3);   }
+  .badge-amber  { background: rgba(245,158,11,.1);  color:#d97706;  border:1px solid rgba(245,158,11,.3);  }
+  .badge-red    { background: rgba(239,68,68,.1);   color:#dc2626;  border:1px solid rgba(239,68,68,.3);   }
+
+  /* Decorative divider */
+  .cert-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #cbd5e1, transparent);
+    margin: 0 0 28px;
+  }
+
+  /* ── FOOTER ROW ── */
+  .cert-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 20px 60px 36px;
+    background: #fff;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  .cert-signature-col { text-align: center; min-width: 160px; }
+  .cert-sig-line {
+    height: 1.5px;
+    background: linear-gradient(90deg,#0ea5e9,#6366f1);
+    border-radius: 2px;
+    margin-bottom: 6px;
+  }
+  .cert-sig-name  { font-size: .78rem; font-weight: 700; color: #0f172a; }
+  .cert-sig-role  { font-size: .68rem; color: #94a3b8; letter-spacing: .5px; text-transform: uppercase; }
+  .cert-mid-seal {
+    text-align: center;
+    flex: 1;
+  }
+  .cert-seal {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg,#0ea5e9,#6366f1);
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 6px;
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(14,165,233,.4);
+  }
+  .cert-seal i   { font-size: 1.8rem; }
+  .cert-seal-txt { font-size: .58rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; color: #64748b; }
+
+  /* Certificate number */
+  .cert-number {
+    font-size: .68rem;
+    color: #94a3b8;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  /* ── BOTTOM STRIP ── */
+  .cert-bottom-strip {
+    background: linear-gradient(135deg,#22c55e,#0ea5e9,#6366f1);
+    height: 8px;
+  }
+
+  /* Corner decorations */
+  .corner { position:absolute; width:40px; height:40px; z-index:5; }
+  .corner-tl { top:22px; left:22px; border-top:3px solid #0ea5e9; border-left:3px solid #0ea5e9; border-radius:4px 0 0 0; }
+  .corner-tr { top:22px; right:22px; border-top:3px solid #6366f1; border-right:3px solid #6366f1; border-radius:0 4px 0 0; }
+  .corner-bl { bottom:22px; left:22px; border-bottom:3px solid #0ea5e9; border-left:3px solid #0ea5e9; border-radius:0 0 0 4px; }
+  .corner-br { bottom:22px; right:22px; border-bottom:3px solid #6366f1; border-right:3px solid #6366f1; border-radius:0 0 4px 0; }
+
+  /* Date badge */
+  .cert-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(14,165,233,.08);
+    border: 1px solid rgba(14,165,233,.25);
+    border-radius: 50px;
+    padding: 5px 16px;
+    font-size: .72rem;
+    color: #0284c7;
+    font-weight: 700;
+    letter-spacing: .5px;
+    margin-bottom: 20px;
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background:#fff!important; padding:0; }
+    .action-bar { display:none!important; }
+    .cert-wrap { box-shadow:none; max-width:100%; border-radius:0; }
+    .cert-top-strip, .cert-bottom-strip { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .cert-heading, .cert-project-name { color:#0f172a!important; }
+  }
+</style>
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<!-- html2pdf -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+
+  <!-- Action Buttons -->
+  <div class="action-bar no-print">
+    <button class="btn-dl btn-print" onclick="window.print()">
+      <i class="fas fa-print"></i> Print Certificate
+    </button>
+    <button class="btn-dl btn-pdf" onclick="downloadPDF()">
+      <i class="fas fa-download"></i> Download PDF
+    </button>
+  </div>
+
+  <!-- Certificate -->
+  <div class="cert-wrap" id="certificate">
+    <!-- Corner decorations -->
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+
+    <div class="cert-top-strip"></div>
+
+    <!-- Header -->
+    <div class="cert-header">
+      <div class="cert-logo-row">
+        <div class="cert-logo-icon"><i class="fas fa-syringe"></i></div>
+        <div>
+          <div class="cert-brand-name">VaxiCare</div>
+          <div class="cert-issuer">Online Vaccine Registration System</div>
+        </div>
+      </div>
+      <div class="cert-issuer" style="margin-top:6px;">BCA Final Year Project &nbsp;·&nbsp; Gauhati University</div>
+    </div>
+
+    <!-- Body -->
+    <div class="cert-body">
+      <div class="cert-title">Certificate of</div>
+      <div class="cert-heading">Project Completion</div>
+
+      <div class="cert-date">
+        <i class="fas fa-calendar-check"></i>
+        May 2026
+      </div>
+
+      <div class="cert-presented">This certificate is proudly presented to</div>
+      <div class="cert-name">Uddipta Bhatta</div>
+
+      <p class="cert-subtitle">
+        for successfully designing, developing, and deploying a fully functional
+        <strong>Online Vaccine Registration System</strong> as the BCA Final Year Project,
+        demonstrating exceptional skill in full-stack web development, database design,
+        and system security.
+      </p>
+
+      <div class="cert-project-box">
+        <div class="cert-project-label">Project Title</div>
+        <div class="cert-project-name">VaxiCare — Online Vaccine Registration System</div>
+      </div>
+
+      <div class="cert-divider"></div>
+
+      <div class="cert-skills">
+        <span class="skill-badge badge-blue">PHP 8</span>
+        <span class="skill-badge badge-blue">MySQL</span>
+        <span class="skill-badge badge-indigo">Bootstrap 5</span>
+        <span class="skill-badge badge-indigo">JavaScript</span>
+        <span class="skill-badge badge-green">HTML5 / CSS3</span>
+        <span class="skill-badge badge-amber">PHPMailer</span>
+        <span class="skill-badge badge-amber">Chart.js</span>
+        <span class="skill-badge badge-red">XAMPP / Apache</span>
+        <span class="skill-badge badge-blue">OTP Authentication</span>
+        <span class="skill-badge badge-green">Certificate Generation</span>
+        <span class="skill-badge badge-indigo">Admin Dashboard</span>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="cert-footer">
+      <div class="cert-signature-col">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:#0f172a;margin-bottom:4px;">Project Guide</div>
+        <div class="cert-sig-line"></div>
+        <div class="cert-sig-name">Project Supervisor</div>
+        <div class="cert-sig-role">Department of Computer Science</div>
+      </div>
+
+      <div class="cert-mid-seal">
+        <div class="cert-seal">
+          <i class="fas fa-shield-virus"></i>
+        </div>
+        <div class="cert-seal-txt">Verified &amp; Authenticated</div>
+        <div class="cert-number">CERT-VAXICARE-2026-001</div>
+      </div>
+
+      <div class="cert-signature-col">
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:#0f172a;margin-bottom:4px;">Uddipta Bhatta</div>
+        <div class="cert-sig-line"></div>
+        <div class="cert-sig-name">Developer &amp; Author</div>
+        <div class="cert-sig-role">BCA Final Year Student</div>
+      </div>
+    </div>
+
+    <div class="cert-bottom-strip"></div>
+  </div>
+
+  <script>
+    function downloadPDF() {
+      const btn = document.querySelector('.action-bar');
+      btn.style.display = 'none';
+      html2pdf().set({
+        margin: 0,
+        filename: 'VaxiCare_Project_Certificate_Uddipta_Bhatta.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 3, useCORS: true, backgroundColor: '#ffffff' },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+      }).from(document.getElementById('certificate')).save().then(() => {
+        btn.style.display = 'flex';
+      });
+    }
+  </script>
+</body>
+</html>

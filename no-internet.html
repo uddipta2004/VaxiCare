@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>No Internet Connection – VaxiCare</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Icons (CDN — cached by browser, works offline after first load) -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* ── VaxiCare Design Tokens ── */
+        :root {
+            --p:    #0ea5e9;
+            --pd:   #0284c7;
+            --s:    #6366f1;
+            --dan:  #ef4444;
+            --warn: #f59e0b;
+            --suc:  #22c55e;
+            --dk:   #0c0e1a;
+            --dk2:  #0f172a;
+            --dk3:  #1e293b;
+            --glass: rgba(255,255,255,.07);
+            --glow: 0 0 25px rgba(14,165,233,.35);
+            --r:    16px;
+            --rt:   20px;
+            --shadow: 0 8px 32px rgba(0,0,0,.4);
+        }
+
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0c0e1a 0%, #0f172a 50%, #0c1e35 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #e2e8f0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* ── Radial ambient glow ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 15% 85%, rgba(14,165,233,.15) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 15%, rgba(99,102,241,.12) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 50%, rgba(34,197,94,.04) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Animated healthcare canvas bg ── */
+        #niCanvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Scroll progress bar (cosmetic) ── */
+        #prog {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            width: 0;
+            background: linear-gradient(90deg, var(--dan), var(--warn), var(--dan));
+            z-index: 99999;
+            animation: progAnim 2.5s ease-in-out infinite;
+        }
+        @keyframes progAnim {
+            0%   { width: 0%;   margin-left: 0; }
+            50%  { width: 70%;  margin-left: 15%; }
+            100% { width: 0%;   margin-left: 100%; }
+        }
+
+        /* ── Main card ── */
+        .ni-card {
+            position: relative;
+            z-index: 10;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(28px);
+            -webkit-backdrop-filter: blur(28px);
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 28px;
+            padding: 52px 48px;
+            max-width: 560px;
+            width: calc(100% - 32px);
+            box-shadow:
+                0 30px 80px rgba(0,0,0,.6),
+                0 0 0 1px rgba(239,68,68,.08),
+                inset 0 1px 0 rgba(255,255,255,.06);
+            text-align: center;
+            animation: cardIn .6s cubic-bezier(.175,.885,.32,1.275) both;
+        }
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(40px) scale(.94); }
+            to   { opacity: 1; transform: translateY(0)    scale(1); }
+        }
+
+        /* ── Brand bar ── */
+        .ni-brand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 36px;
+        }
+        .ni-brand img {
+            height: 32px;
+            width: auto;
+            border-radius: 6px;
+            filter: drop-shadow(0 0 8px rgba(14,165,233,.5));
+        }
+        .ni-brand-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--p), var(--s));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Icon orbit ── */
+        .ni-icon-wrap {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 32px;
+        }
+        .ni-icon-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 2px solid rgba(239,68,68,.3);
+            animation: ringPulse 2.5s ease-in-out infinite;
+        }
+        .ni-icon-ring:nth-child(2) {
+            inset: -12px;
+            border-color: rgba(239,68,68,.15);
+            animation-delay: .5s;
+        }
+        .ni-icon-ring:nth-child(3) {
+            inset: -24px;
+            border-color: rgba(239,68,68,.07);
+            animation-delay: 1s;
+        }
+        @keyframes ringPulse {
+            0%, 100% { transform: scale(1);   opacity: 1; }
+            50%       { transform: scale(1.06); opacity: .6; }
+        }
+        .ni-icon-core {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(239,68,68,.18), rgba(245,158,11,.12));
+            border: 1.5px solid rgba(239,68,68,.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.4rem;
+            color: var(--dan);
+            box-shadow: 0 0 30px rgba(239,68,68,.25), inset 0 0 20px rgba(239,68,68,.08);
+            animation: iconFloat 4s ease-in-out infinite;
+        }
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-8px); }
+        }
+
+        /* ── Cross / slash over wifi ── */
+        .ni-icon-core .slash {
+            position: absolute;
+            width: 2.5px;
+            height: 56px;
+            background: linear-gradient(var(--dan), var(--warn));
+            border-radius: 2px;
+            transform: rotate(45deg);
+            top: 50%; left: 50%;
+            margin-top: -28px;
+            margin-left: -1.25px;
+            opacity: .9;
+        }
+
+        /* ── ECG pulse line ── */
+        .ni-ecg {
+            margin: 0 auto 32px;
+            display: block;
+        }
+        .ni-ecg-path {
+            stroke-dasharray: 600;
+            stroke-dashoffset: 600;
+            animation: ecgDraw 2.2s ease-out .4s forwards, ecgGlow 2.5s ease-in-out 2.6s infinite;
+        }
+        @keyframes ecgDraw {
+            to { stroke-dashoffset: 0; }
+        }
+        @keyframes ecgGlow {
+            0%, 100% { filter: drop-shadow(0 0 3px rgba(239,68,68,.6)); }
+            50%       { filter: drop-shadow(0 0 10px rgba(239,68,68,1)); }
+        }
+
+        /* ── Status badge ── */
+        .ni-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(239,68,68,.12);
+            border: 1px solid rgba(239,68,68,.3);
+            border-radius: 50px;
+            padding: 7px 18px;
+            font-size: .78rem;
+            font-weight: 700;
+            color: #fca5a5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+        .ni-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--dan);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--dan);
+            animation: dotBlink 1.2s ease-in-out infinite;
+        }
+        @keyframes dotBlink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: .2; }
+        }
+
+        /* ── Headings & text ── */
+        .ni-title {
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 12px;
+            line-height: 1.2;
+        }
+        .ni-title span {
+            background: linear-gradient(135deg, var(--dan), var(--warn));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .ni-subtitle {
+            font-size: .95rem;
+            color: rgba(255,255,255,.55);
+            line-height: 1.7;
+            margin-bottom: 32px;
+        }
+
+        /* ── Tips list ── */
+        .ni-tips {
+            background: rgba(255,255,255,.04);
+            border: 1px solid rgba(255,255,255,.07);
+            border-radius: var(--r);
+            padding: 18px 22px;
+            text-align: left;
+            margin-bottom: 32px;
+        }
+        .ni-tips-title {
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            color: rgba(255,255,255,.4);
+            margin-bottom: 12px;
+        }
+        .ni-tip-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(255,255,255,.05);
+            font-size: .87rem;
+            color: rgba(255,255,255,.65);
+        }
+        .ni-tip-item:last-child { border-bottom: none; }
+        .ni-tip-icon {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: .75rem;
+            flex-shrink: 0;
+        }
+        .ni-tip-icon.blue   { background: rgba(14,165,233,.15);  color: var(--p); }
+        .ni-tip-icon.green  { background: rgba(34,197,94,.15);   color: var(--suc); }
+        .ni-tip-icon.orange { background: rgba(245,158,11,.15);  color: var(--warn); }
+        .ni-tip-icon.purple { background: rgba(99,102,241,.15);  color: var(--s); }
+
+        /* ── Retry button ── */
+        .ni-btn-retry {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, rgba(14,165,233,.8), rgba(99,102,241,.8));
+            border: 1.5px solid rgba(255,255,255,.22);
+            border-radius: 50px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: .95rem;
+            font-weight: 700;
+            padding: 14px 36px;
+            cursor: pointer;
+            transition: all .35s cubic-bezier(.175,.885,.32,1.275);
+            outline: none;
+            box-shadow: 0 4px 20px rgba(14,165,233,.2);
+            overflow: hidden;
+            position: relative;
+        }
+        .ni-btn-retry:hover {
+            transform: translateY(-3px) scale(1.04);
+            box-shadow: 0 10px 35px rgba(14,165,233,.45);
+        }
+        .ni-btn-retry:active {
+            transform: translateY(0) scale(.98);
+        }
+        .ni-btn-retry i { transition: transform .3s; }
+        .ni-btn-retry:hover i { transform: rotate(180deg); }
+
+        /* ── Auto-reconnect countdown ── */
+        .ni-countdown {
+            margin-top: 18px;
+            font-size: .82rem;
+            color: rgba(255,255,255,.38);
+        }
+        .ni-countdown strong {
+            color: rgba(255,255,255,.65);
+            font-weight: 700;
+        }
+
+        /* ── Restored banner (hidden by default) ── */
+        .ni-restored {
+            display: none;
+            position: fixed;
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: linear-gradient(135deg, rgba(34,197,94,.2), rgba(14,165,233,.15));
+            border: 1px solid rgba(34,197,94,.4);
+            border-radius: 50px;
+            padding: 14px 32px;
+            font-size: .9rem;
+            font-weight: 700;
+            color: #86efac;
+            box-shadow: 0 8px 32px rgba(0,0,0,.5);
+            z-index: 99999;
+            white-space: nowrap;
+            transition: transform .45s cubic-bezier(.175,.885,.32,1.275), opacity .4s;
+            opacity: 0;
+        }
+        .ni-restored.show {
+            display: block;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+        .ni-restored i { margin-right: 8px; color: var(--suc); }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255,255,255,.03); }
+        ::-webkit-scrollbar-thumb { background: rgba(14,165,233,.4); border-radius: 3px; }
+
+        /* ── Responsive ── */
+        @media (max-width: 600px) {
+            .ni-card { padding: 36px 24px; }
+            .ni-title { font-size: 1.5rem; }
+            .ni-btn-retry { padding: 12px 28px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animated progress bar (cosmetic "scanning" effect) -->
+    <div id="prog"></div>
+
+    <!-- Healthcare ECG canvas background -->
+    <canvas id="niCanvas"></canvas>
+
+    <!-- ── Main Card ── -->
+    <div class="ni-card" id="niCard">
+
+        <!-- Brand -->
+        <div class="ni-brand">
+            <img src="assets/img/logo.png" alt="VaxiCare Logo" onerror="this.style.display='none'">
+            <span class="ni-brand-name">VaxiCare</span>
+        </div>
+
+        <!-- Animated icon -->
+        <div class="ni-icon-wrap">
+            <div class="ni-icon-ring"></div>
+            <div class="ni-icon-ring"></div>
+            <div class="ni-icon-ring"></div>
+            <div class="ni-icon-core">
+                <i class="fas fa-wifi" style="position:relative;z-index:1;"></i>
+                <div class="slash"></div>
+            </div>
+        </div>
+
+        <!-- ECG Flatline SVG -->
+        <svg class="ni-ecg" width="340" height="52" viewBox="0 0 340 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="ni-ecg-path"
+                d="M0,26 L80,26 L100,26 L110,4 L120,48 L130,14 L140,38 L148,26 L260,26"
+                stroke="#ef4444" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                fill="none"/>
+            <!-- Flat-line continuation after the pulse -->
+            <path d="M260,26 L340,26" stroke="#ef4444" stroke-width="2.2" stroke-linecap="round"
+                stroke-dasharray="6 6" opacity="0.4"/>
+        </svg>
+
+        <!-- Status badge -->
+        <div class="ni-status-badge">
+            <div class="ni-dot"></div>
+            Connection Lost
+        </div>
+
+        <!-- Heading -->
+        <h1 class="ni-title">
+            <span>No Internet</span> Connection
+        </h1>
+        <p class="ni-subtitle">
+            Your device appears to be offline. VaxiCare needs an active internet connection to
+            provide real-time vaccination services and secure health data.
+        </p>
+
+        <!-- Tips -->
+        <div class="ni-tips">
+            <div class="ni-tips-title">Troubleshooting Tips</div>
+            <div class="ni-tip-item">
+                <div class="ni-tip-icon blue"><i class="fas fa-wifi"></i></div>
+                Check if your Wi-Fi or mobile data is switched on
+            </div>
+            <div class="ni-tip-item">
+                <div class="ni-tip-icon green"><i class="fas fa-router"></i></div>
+                Restart your router or toggle Airplane mode
+            </div>
+            <div class="ni-tip-item">
+                <div class="ni-tip-icon orange"><i class="fas fa-signal"></i></div>
+                Move to an area with stronger signal
+            </div>
+            <div class="ni-tip-item">
+                <div class="ni-tip-icon purple"><i class="fas fa-sync-alt"></i></div>
+                Contact your ISP if the issue persists
+            </div>
+        </div>
+
+        <!-- Retry button -->
+        <button class="ni-btn-retry" id="niRetryBtn" onclick="niRetry()">
+            <i class="fas fa-redo-alt"></i>
+            Try Again
+        </button>
+
+        <!-- Auto-check countdown -->
+        <p class="ni-countdown" id="niCountdown">
+            Checking connection in <strong id="niTimer">10</strong>s
+        </p>
+
+    </div><!-- /ni-card -->
+
+    <!-- Internet restored banner -->
+    <div class="ni-restored" id="niRestored">
+        <i class="fas fa-check-circle"></i>
+        Connection restored! Redirecting you back…
+    </div>
+
+    <script>
+    // ─────────────────────────────────────────────
+    //  VaxiCare – No Internet Page Logic
+    // ─────────────────────────────────────────────
+
+    // ── 1. Retrieve the page the user was on before losing connection ──
+    var returnUrl = (function() {
+        try {
+            var stored = sessionStorage.getItem('vc_return_url');
+            if (stored && stored !== window.location.href) return stored;
+        } catch(e) {}
+        return document.referrer || null;
+    })();
+
+    // ── 2. Countdown timer (auto-retry) ──
+    var timerEl = document.getElementById('niTimer');
+    var countdown = 10;
+    var countdownInterval = setInterval(function() {
+        countdown--;
+        if (timerEl) timerEl.textContent = countdown;
+        if (countdown <= 0) {
+            clearInterval(countdownInterval);
+            niRetry();
+        }
+    }, 1000);
+
+    // ── 3. Retry: check navigator.onLine then do a real HEAD fetch ──
+    function niRetry() {
+        clearInterval(countdownInterval);
+        if (navigator.onLine) {
+            showRestored();
+        } else {
+            // Reset countdown
+            countdown = 10;
+            if (timerEl) timerEl.textContent = countdown;
+            countdownInterval = setInterval(function() {
+                countdown--;
+                if (timerEl) timerEl.textContent = countdown;
+                if (countdown <= 0) { clearInterval(countdownInterval); niRetry(); }
+            }, 1000);
+        }
+    }
+
+    // ── 4. Listen for the browser's online event ──
+    window.addEventListener('online', function() {
+        clearInterval(countdownInterval);
+        showRestored();
+    });
+
+    // ── 5. If still somehow offline on load, listen for offline too (belt-and-suspenders) ──
+    window.addEventListener('offline', function() {
+        // already on this page — nothing to do
+    });
+
+    // ── 6. Show restored banner then redirect ──
+    function showRestored() {
+        var banner = document.getElementById('niRestored');
+        if (banner) {
+            banner.classList.add('show');
+        }
+        setTimeout(function() {
+            if (returnUrl) {
+                window.location.href = returnUrl;
+            } else {
+                window.location.reload();
+            }
+        }, 1800);
+    }
+
+    // ── 7. Healthcare ECG background canvas ──
+    (function() {
+        var canvas = document.getElementById('niCanvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var w, h, particles = [], ecgPhase = 0;
+
+        function resize() {
+            w = canvas.width  = window.innerWidth;
+            h = canvas.height = window.innerHeight;
+        }
+        resize();
+        window.addEventListener('resize', resize);
+
+        for (var i = 0; i < 35; i++) {
+            particles.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                r: Math.random() * 1.8 + .4,
+                dx: (Math.random() - .5) * .35,
+                dy: (Math.random() - .5) * .28,
+                o: Math.random() * .18 + .05
+            });
+        }
+
+        function ecgY(x, phase) {
+            var t = (x * .008 + phase) % (Math.PI * 2);
+            if (t > 2.8 && t < 3.0)  return -38;
+            if (t > 3.0 && t < 3.15) return  55;
+            if (t > 3.15 && t < 3.3) return -18;
+            return Math.sin(t * 2) * 2.5;
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, w, h);
+            ecgPhase += .011;
+
+            // Draw 3 ECG lines (subdued — the flatline after pulse is red on card)
+            for (var line = 0; line < 3; line++) {
+                var yBase = h * (.2 + line * .28);
+                var alpha = .09 - line * .02;
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(239,68,68,' + alpha + ')';
+                ctx.lineWidth = 1.4;
+                for (var x = 0; x < w; x += 2) {
+                    var y = yBase + ecgY(x, ecgPhase + line * 1.5);
+                    x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            }
+
+            // Floating particles
+            for (var i = 0; i < particles.length; i++) {
+                var p = particles[i];
+                p.x += p.dx; p.y += p.dy;
+                if (p.x < 0) p.x = w;   if (p.x > w) p.x = 0;
+                if (p.y < 0) p.y = h;   if (p.y > h) p.y = 0;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(14,165,233,' + p.o + ')';
+                ctx.fill();
+            }
+
+            requestAnimationFrame(draw);
+        }
+        draw();
+    })();
+    </script>
+</body>
+</html>
